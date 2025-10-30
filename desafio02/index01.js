@@ -1,24 +1,43 @@
-class TV {
-    turnOn() {
-      console.log("TV ligada.");
-    }
-    turnOff() {
-      console.log("TV desligada.");
+class LegacyPaymentSystem {
+    makePayment(amount) {
+      console.log(`Pagando R$${amount} com sistema legado.`);
     }
   }
   
-  class RemoteControl {
-    constructor() {
-      this.tv = new TV();
-    }
-  
-    pressPowerButton(on) {
-      if (on) this.tv.turnOn();
-      else this.tv.turnOff();
+  class ModernPaymentAPI {
+    process(amountInCents) {
+      console.log(`Pagamento de R$${amountInCents / 100} via API moderna.`);
     }
   }
   
-  const remote = new RemoteControl();
-  remote.pressPowerButton(true);
-  remote.pressPowerButton(false);
+  class ModernPaymentAdapter {
+    constructor(modernAPI) {
+      this.modernAPI = modernAPI;
+    }
   
+    makePayment(amount) {
+      const amountInCents = amount * 100;
+      this.modernAPI.process(amountInCents);
+    }
+  }
+  
+  class PaymentProcessor {
+    constructor(system) {
+      this.system = system;
+    }
+  
+    pay(amount) {
+      this.system.makePayment(amount);
+    }
+  }
+  
+  const legacy = new LegacyPaymentSystem();
+  const legacyProcessor = new PaymentProcessor(legacy);
+  
+  legacyProcessor.pay(100);
+  
+  const modernAPI = new ModernPaymentAPI();
+  const modernAdapter = new ModernPaymentAdapter(modernAPI);
+  const modernProcessor = new PaymentProcessor(modernAdapter);
+  
+  modernProcessor.pay(100);

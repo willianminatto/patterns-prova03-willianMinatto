@@ -1,34 +1,54 @@
-class Task {
-    constructor(name) {
-      this.name = name;
+class Device {
+    turnOn() {}
+    turnOff() {}
+    setVolume(level) {}
+  }
+  
+  class TV extends Device {
+    turnOn() {
+      console.log("TV ligada.");
     }
   
-    showDetails() {
-      console.log(`Tarefa: ${this.name}`);
+    turnOff() {
+      console.log("TV desligada.");
     }
   }
   
-  class Project {
-    constructor(name) {
-      this.name = name;
-      this.tasks = [];
+  class Radio extends Device {
+    turnOn() {
+      console.log("Rádio ligado.");
     }
   
-    add(task) {
-      this.tasks.push(task);
-    }
-  
-    showDetails() {
-      console.log(`Projeto: ${this.name}`);
-      this.tasks.forEach((task) => console.log(`  - ${task.name}`));
+    turnOff() {
+      console.log("Rádio desligado.");
     }
   }
   
-  const t1 = new Task("Escrever documentação");
-  const t2 = new Task("Fazer testes");
-  const p = new Project("Lançamento v1.0");
-  p.add(t1);
-  p.add(t2);
+  class RemoteControl {
+    constructor(device) {
+      this.device = device;
+    }
   
-  p.showDetails();
+    pressPowerButton(on) {
+      on ? this.device.turnOn() : this.device.turnOff();
+    }
+  }
   
+  class AdvancedRemoteControl extends RemoteControl {
+    mute() {
+      console.log("Dispositivo no modo mudo.");
+    }
+  }
+  
+  const tv = new TV();
+  const remoteForTV = new RemoteControl(tv);
+  
+  remoteForTV.pressPowerButton(true);
+  remoteForTV.pressPowerButton(false);
+  
+  const radio = new Radio();
+  const advancedRemote = new AdvancedRemoteControl(radio);
+  
+  advancedRemote.pressPowerButton(true);
+  advancedRemote.mute();
+  advancedRemote.pressPowerButton(false);
